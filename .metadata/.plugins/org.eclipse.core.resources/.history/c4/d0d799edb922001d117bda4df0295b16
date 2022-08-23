@@ -69,7 +69,6 @@ public class IndexController {
 		user.setRole("ROLE_USER");
 		String oriPwd = user.getPassword();
 		String encPwd = bCryptPasswordEncoder.encode(oriPwd);
-		user.setPassword(encPwd);
 		userRepository.save(user);
 		return "redirect:/loginForm";
 	}
