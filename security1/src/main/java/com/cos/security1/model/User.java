@@ -10,16 +10,14 @@ import javax.persistence.Id;
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
-@Entity
 @Data
+@Entity
 public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
 	private String username;
 	
@@ -32,11 +30,15 @@ public class User {
 	@CreationTimestamp
 	private Timestamp createDate;
 
-	public int getId() {
+	public String getPassword() {
+		return password;
+	}
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -46,14 +48,6 @@ public class User {
 
 	public void setUsername(String username) {
 		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public String getEmail() {
@@ -80,10 +74,8 @@ public class User {
 		this.createDate = createDate;
 	}
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", role="
-				+ role + ", createDate=" + createDate + "]";
+	public void setPassword(String password) {
+		this.password = password;
 	}
-	
+
 }

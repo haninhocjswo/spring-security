@@ -1,0 +1,78 @@
+package com.cos.security1.auth;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.cos.security1.model.User;
+
+// 시큐리티가 /login 주소 요청이 오면 낚아채서 로그인을 진행
+// 로그인의 진행이 완료가 되면 시큐리티 session 생성 (Security ContextHolder에 유저정보 저장)
+// 시큐리티 session에 들어갈 수 있는 오브젝트 타입 => Authentication 타입 객체
+// Authentication 안에는 User정보가 있어야 됨
+// Authentication에 들어갈 User오브젝트 타입은 UserDetails 타입 객체
+
+//Security Session => Authentication => UserDetails
+
+public class PrincipalDetails implements UserDetails {
+	
+	private User user;
+	
+	
+
+	public PrincipalDetails(User user) {
+		this.user = user;
+	}
+
+	//해당 User의 권한을 리턴하는 메소드
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		Collection<GrantedAuthority> collect = new ArrayList<>();
+		collect.add(new GrantedAuthority() {		
+			@Override
+			public String getAuthority() {
+				return user.getRole();
+			}
+		});
+		
+		return collect;
+	}
+
+	@Override
+	public String getPassword() {
+		return user.getPassword();
+	}
+
+	@Override
+	public String getUsername() {
+		return user.getUsername();
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	//계정만료 true가 아니오 (너 계정만료 되지 않았니? true면 아니오)
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	//비밀번호 변경 주기 true가 아니오 (너 비밇번호 변경할 때 되지 않았니? true면 아니오)
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	//계정활성화 true가 아니오 (너 계정활성화 되어있니? true면 아니오)
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+
+}

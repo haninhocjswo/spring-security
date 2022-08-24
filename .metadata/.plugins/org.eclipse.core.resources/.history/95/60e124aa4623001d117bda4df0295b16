@@ -1,0 +1,70 @@
+package com.cos.security1.auth;
+
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.cos.security1.model.User;
+
+// 시큐리티가 /login 주소 요청이 오면 낚아채서 로그인을 진행
+// 로그인의 진행이 완료가 되면 시큐리티 session 생성 (Security ContextHolder에 유저정보 저장)
+// 시큐리티 session에 들어갈 수 있는 오브젝트 타입 => Authentication 타입 객체
+// Authentication 안에는 User정보가 있어야 됨
+// Authentication에 들어갈 User오브젝트 타입은 UserDetails 타입 객체
+
+//Security Session => Authentication => UserDetails
+
+public class PrincipalDetails implements UserDetails {
+	
+	private User user;
+	
+	
+
+	public PrincipalDetails(User user) {
+		this.user = user;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}
