@@ -27,6 +27,10 @@ public class User {
 	
 	private String role;
 	
+	private String provider;
+	
+	private String providerId;
+	
 	@CreationTimestamp
 	private Timestamp createDate;
 
@@ -76,6 +80,22 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getProvider() {
+		return provider;
+	}
+
+	public void setProvider(String provider) {
+		this.provider = provider;
+	}
+
+	public String getProviderId() {
+		return providerId;
+	}
+
+	public void setProviderId(String providerId) {
+		this.providerId = providerId;
 	}
 
 }
