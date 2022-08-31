@@ -1,0 +1,57 @@
+package com.cos.security1.config.oauth;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Service;
+
+import com.cos.security1.config.auth.PrincipalDetails;
+import com.cos.security1.model.User;
+import com.cos.security1.repository.UserRepository;
+
+@Service
+public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	// 구글로부터 받은 userRequest 데이터에 대한 후처리되는 함수
+	@Override
+	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+		//구글로그인 버튼 클릭 -> 구글로그인창 -> 로그인진행   
+		//-> 구글쪽에서 우리쪽으로 code리턴(Oauth-Client라이브러리에서 받아줌)
+		//-> Oauth-Client라이브러리가 code를 리턴받으면 AccessToken을 요청
+		OAuth2User oAuth2User = super.loadUser(userRequest);
+		System.out.println("loadUser getAttribute :: " + oAuth2User.getAttributes());
+		System.out.println("loadUser getClientRegistration :: " + userRequest.getClientRegistration().getRegistrationId());
+		
+		String username = (String) "google_" + oAuth2User.getAttributes().get("sub");
+		String password = bCryptPasswordEncoder.encode("ㅁㄴㅇㅁㅊㅋㅌㅊㅁㄴ");
+		String email = (String) oAuth2User.getAttributes().get("email");
+		String provide = userRequest.getClientRegistration().getRegistrationId();
+		String provideId = (String) oAuth2User.getAttributes().get("sub");
+		String role = "ROLE_USER";
+		
+		User user = userRepository.findByUsername(username);
+		
+		if(user == null) {
+			User userEntity = new User();
+			userEntity.setUsername(username);
+			userEntity.setPassword(password);
+			userEntity.setEmail(email);
+			userEntity.setProvider(provide);
+			userEntity.setProviderId(provideId);
+			userEntity.setRole(role);
+			userRepository.save(userEntity);
+		}
+		System.out.println("가기 전 :: " + user.toString());
+		return new PrincipalDetails(user, oAuth2User);
+	}
+
+}

@@ -92,7 +92,7 @@ public class IndexController {
 //	사용자 인증정보 입력시 http://localhost:8080/login/oauth2/code/google 식으로 입력
 //	http://localhost:8080 까지는 자유 
 //	/login/oauth2/code 까지는 고정 --> 리다이렉트 url을 무조건 저런 형식으로 입력해야한다.
-//	/google 까지는 자유
+//	/google 는 로그인계정을 원하는 사이트
 //	컨트롤러 메소드 생성은 필요없다.
 //	@GetMapping("/login/oauth2/code/google")
 //	public @ResponseBody String googleLogin() {
@@ -116,5 +116,26 @@ public class IndexController {
 		OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
 		System.out.println("principalDetails : " + oAuth2User.getAttributes());
 		return "oauth2 세션확인";
+	}
+	
+	@GetMapping("/test/principal/login")
+	@ResponseBody
+	public String testPrincipalLogin(@AuthenticationPrincipal PrincipalDetails priciDetails) {
+		String message = "";
+		String provider = priciDetails.getUser().getProvider();
+		
+		if(provider != null) {
+			if(provider.equals("google")) {
+				message = "구글 계정으로 로그인하셨습니다.";
+			}
+
+			if(provider.equals("kakao")) {
+				message = "카카오 계정으로 로그인하셨습니다.";
+			}
+		} else {
+			message = "일반 계정으로 로그인하셨습니다.";
+		}
+		
+		return message;
 	}
 }

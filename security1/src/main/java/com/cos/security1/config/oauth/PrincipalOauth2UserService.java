@@ -1,13 +1,31 @@
 package com.cos.security1.config.oauth;
 
+import java.util.Map;
+
+import org.hibernate.internal.build.AllowSysOut;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import com.cos.security1.config.auth.PrincipalDetails;
+import com.cos.security1.config.oauth.provider.GoogleProvider;
+import com.cos.security1.config.oauth.provider.KakaoProvider;
+import com.cos.security1.config.oauth.provider.Oauth2ProviderDiscrimination;
+import com.cos.security1.model.User;
+import com.cos.security1.repository.UserRepository;
+
 @Service
 public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	// 구글로부터 받은 userRequest 데이터에 대한 후처리되는 함수
 	@Override
@@ -16,7 +34,49 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 		//-> 구글쪽에서 우리쪽으로 code리턴(Oauth-Client라이브러리에서 받아줌)
 		//-> Oauth-Client라이브러리가 code를 리턴받으면 AccessToken을 요청
 		OAuth2User oAuth2User = super.loadUser(userRequest);
-		return oAuth2User;
+		Map<String, Object> attributes = oAuth2User.getAttributes();
+		Oauth2ProviderDiscrimination oauth2ProviderDiscrimination = null;		
+		
+		switch (userRequest.getClientRegistration().getRegistrationId()) {
+		case "google":
+			
+			oauth2ProviderDiscrimination = new GoogleProvider(attributes);
+			
+			break;
+
+		case "kakao":
+			
+			oauth2ProviderDiscrimination = new KakaoProvider(attributes);
+			
+			break;
+			
+		default:
+			System.out.println("이미 해당 소셜사이트의 계정으로 회원가입되었습니다.");
+			break;
+		}
+		
+		String provider = userRequest.getClientRegistration().getRegistrationId();		
+		String provideId = oauth2ProviderDiscrimination.providerId();		
+		String username = oauth2ProviderDiscrimination.username();		
+		String password = bCryptPasswordEncoder.encode("spring_security_" + username);		
+		String email = oauth2ProviderDiscrimination.email();		
+		String role = "ROLE_USER";
+		
+		
+		User user = userRepository.findByUsername(username);
+		
+		if(user == null) {
+			user = new User();
+			user.setUsername(username);
+			user.setEmail(email);
+			user.setProvider(provider);
+			user.setProviderId(provideId);
+			user.setRole(role);
+			user.setPassword(password);
+			userRepository.save(user);
+		}
+		
+		return new PrincipalDetails(user, oAuth2User);
 	}
 
 }

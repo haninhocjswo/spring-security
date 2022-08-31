@@ -1,0 +1,33 @@
+package com.cos.security1.config.oauth.provider;
+
+import org.springframework.security.oauth2.core.user.OAuth2User;
+
+import com.cos.security1.model.User;
+
+public class KakaoProvider implements Oauth2ProviderDiscrimination {
+
+	@Override
+	public String username() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String provider() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String providerId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String email() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

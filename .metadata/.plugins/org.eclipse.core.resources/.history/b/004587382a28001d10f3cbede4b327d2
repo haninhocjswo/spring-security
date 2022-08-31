@@ -1,0 +1,5 @@
+package com.cos.security1.config.oauth.model;
+
+public class Oauth2ProviderLoginParam {
+
+}

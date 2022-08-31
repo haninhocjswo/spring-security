@@ -1,0 +1,37 @@
+package com.cos.security1.config.oauth.provider;
+
+import java.util.Map;
+
+import org.springframework.security.oauth2.core.user.OAuth2User;
+
+import com.cos.security1.model.User;
+
+public class GoogleProvider implements Oauth2ProviderDiscrimination {
+
+	private Map<String, Object> oAuth2User;
+	
+	public GoogleProvider(Map<String, Object> oAuth2User) {
+		this.oAuth2User = oAuth2User;
+	}
+
+	@Override
+	public String username() {
+		return (String) "google_" + oAuth2User.get("sub");
+	}
+
+	@Override
+	public String provider() {
+		return "google";
+	}
+
+	@Override
+	public String providerId() {
+		return (String) oAuth2User.get("sub");
+	}
+
+	@Override
+	public String email() {
+		return (String) oAuth2User.get("email");
+	}
+
+}

@@ -13,9 +13,18 @@ import com.cos.security1.model.User;
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
 	private User user;
+	
+	private OAuth2User oAuth2User;
 
+	//일반사용자 로그인 시 생성자
 	public PrincipalDetails(User user) {
 		this.user = user;
+	}
+	
+	//OAuth 로그인 시 생성자
+	public PrincipalDetails(User user, OAuth2User oAuth2User) {
+		this.user = user;
+		this.oAuth2User = oAuth2User;
 	}
 
 	//계정이 갖고있는 권한 목록은 리턴
@@ -78,7 +87,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
 	@Override
 	public Map<String, Object> getAttributes() {
-		return null;
+		return oAuth2User.getAttributes();
 	}
 
 	@Override

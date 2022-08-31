@@ -64,7 +64,7 @@
 	</section>
 	<section name="DialogBounds_AddUnimplementedConstructorsDialog">
 		<item key="DIALOG_X_ORIGIN" value="464"/>
-		<item key="DIALOG_Y_ORIGIN" value="-192"/>
+		<item key="DIALOG_Y_ORIGIN" value="9"/>
 		<item key="DIALOG_WIDTH" value="668"/>
 		<item key="DIALOG_HEIGHT" value="806"/>
 		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
@@ -77,6 +77,18 @@
 		<item key="DIALOG_Y_ORIGIN" value="9"/>
 		<item key="DIALOG_WIDTH" value="668"/>
 		<item key="DIALOG_HEIGHT" value="869"/>
+		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
+	</section>
+	<section name="JavaSearchPage">
+		<item key="CASE_SENSITIVE" value="false"/>
+		<item key="INCLUDE_MASK" value="11"/>
+		<item key="HISTORY_SIZE" value="0"/>
+	</section>
+	<section name="DialogBounds_AddDelegateMethodsDialog">
+		<item key="DIALOG_X_ORIGIN" value="615"/>
+		<item key="DIALOG_Y_ORIGIN" value="46"/>
+		<item key="DIALOG_WIDTH" value="709"/>
+		<item key="DIALOG_HEIGHT" value="718"/>
 		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
 	</section>
 </section>

@@ -1,0 +1,10 @@
+package com.cos.security1.config.oauth.provider;
+
+import org.springframework.security.oauth2.core.user.OAuth2User;
+
+import com.cos.security1.model.User;
+
+public interface Oauth2ProviderDiscrimination {
+
+	public User providerUser(String provider, OAuth2User oAuth2User);
+}
